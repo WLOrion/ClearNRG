@@ -1,6 +1,8 @@
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 from dotenv import load_dotenv
+from urllib.parse import quote_plus
+
 import os
 # Carregar as variáveis de ambiente
 load_dotenv()
@@ -11,8 +13,11 @@ password = os.getenv("MYSQL_PASSWORD")
 host = os.getenv("MYSQL_HOST")
 port = os.getenv("MYSQL_PORT")
 database = os.getenv("MYSQL_DATABASE")
+user_encoded = quote_plus(user)
+password_encoded = quote_plus(password)
 
-db_url = f"mysql+mysqlconnector://{user}:{password}@{host}:{port}/{database}"
+
+db_url = f"mysql+mysqlconnector://{user_encoded}:{password_encoded}@{host}:{port}/{database}"
 
 # Configurar o motor de conexão com o banco de dados
 engine = create_engine(db_url)

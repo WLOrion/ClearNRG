@@ -1,0 +1,33 @@
+CREATE TABLE ESTADOS (
+    id TINYINT NOT NULL PRIMARY KEY CHECK (id > 0),
+    nome VARCHAR(20) NOT NULL,
+    sigla CHAR(2) NOT NULL
+);
+
+CREATE TABLE CIDADES (
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(50) NOT NULL,
+    estado_id TINYINT NOT NULL,
+    latitude DECIMAL(8,5) NOT NULL,
+    longitude DECIMAL(8,5) NOT NULL,
+    FOREIGN KEY (estado_id) REFERENCES ESTADOS(id) ON DELETE CASCADE
+);
+
+CREATE TABLE DADOS_EOLICOS (
+    id BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    cidade_id INT UNSIGNED NOT NULL,
+    tempo TIMESTAMP NOT NULL,
+    duracao VARCHAR(10) NOT NULL,
+    rajada_maxima DECIMAL(5,2) NOT NULL,  -- Velocidade em m/s ou km/h, até 2 casas decimais
+    velocidade_maxima DECIMAL(5,2) NOT NULL,  -- Velocidade em m/s ou km/h, até 2 casas decimais
+    FOREIGN KEY (cidade_id) REFERENCES CIDADES(id) ON DELETE CASCADE
+);
+
+CREATE TABLE DADOS_SOLARES (
+    id BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    cidade_id INT UNSIGNED NOT NULL,
+    tempo TIMESTAMP NOT NULL,
+    radiacao_anual BIGINT UNSIGNED NOT NULL,  -- Potência em KW
+    incidencia_solar BIGINT UNSIGNED NOT NULL,  -- Potência em KW
+    FOREIGN KEY (cidade_id) REFERENCES CIDADES(id) ON DELETE CASCADE
+);
